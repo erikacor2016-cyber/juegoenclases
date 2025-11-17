@@ -1,232 +1,82 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Actividad: Clasifica los documentos</title>
+<meta charset="UTF-8">
+<title>Actividad Auxiliar Administrativo - Drag & Drop</title>
 <style>
-  body { font-family: Arial, sans-serif; padding: 16px; background:#f7f9fc; color:#222; }
-  h1 { font-size:20px; margin-bottom:8px; }
-  .layout { display:flex; gap:12px; flex-wrap:wrap; }
-  .folders { display:flex; gap:12px; flex-wrap:wrap; }
-  .folder {
-    width: 46%;
-    min-height: 200px;
-    border: 2px dashed #6b7280;
-    border-radius:10px;
-    padding:10px;
-    background:#fff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-  }
-  .folder h3 { margin:0 0 8px 0; font-size:16px; }
-  #documents { margin-top:14px; display:flex; flex-direction:column; gap:8px; }
-  .document {
-    padding:8px 10px;
-    border-radius:8px;
-    background:#e6f0ff;
-    border:1px solid #9bb1ff;
-    display:inline-block;
-    cursor:grab;
-    user-select:none;
-  }
-  #controls { margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; }
-  button { padding:10px 14px; border:none; border-radius:8px; cursor:pointer; }
-  button.primary { background:#0b76ef; color:white; }
-  button.ghost { background:#eee; color:#333; }
-  #resultado { margin-top:12px; padding:12px; border-radius:10px; display:none; white-space:pre-wrap; }
-  .ok { background:#d4edda; color:#155724; border:1px solid #c3e6cb; }
-  .error { background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; }
-  /* Responsive */
-  @media (min-width:760px){
-    .folder { width: 23%; }
-    #documents { width:100%; display:flex; flex-wrap:wrap; gap:8px; }
-  }
+    body { font-family: Arial; padding: 20px; }
+    h2 { margin-bottom: 20px; }
+    .contenedor { display: flex; flex-wrap: wrap; gap: 15px; }
+    .carpeta {
+        width: 250px; min-height: 220px;
+        border: 2px dashed #333;
+        padding: 10px; 
+        border-radius: 10px;
+        background: #fafafa;
+    }
+    .carpeta h3 { text-align: center; }
+    .item {
+        padding: 10px;
+        margin: 8px;
+        background: #f2f2f2;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        cursor: grab;
+        touch-action: none;
+    }
 </style>
 </head>
 <body>
 
-<h1>Actividad: Clasifica los documentos en la carpeta correcta</h1>
-<p>Arrastra cada documento y suéltalo dentro de la carpeta que corresponda. Cuando termines pulsa <strong>Enviar resultados</strong>.</p>
+<h2>Arrastra los 15 documentos a la carpeta correcta</h2>
 
-<div class="layout">
-  <div class="folders" id="folders">
-    <div class="folder" id="Contabilidad" ondrop="drop(event)" ondragover="allowDrop(event)">
-      <h3>📘 Contabilidad</h3>
-    </div>
-
-    <div class="folder" id="TalentoHumano" ondrop="drop(event)" ondragover="allowDrop(event)">
-      <h3>🧑‍💼 Talento Humano</h3>
-    </div>
-
-    <div class="folder" id="GestionDocumental" ondrop="drop(event)" ondragover="allowDrop(event)">
-      <h3>📚 Gestión Documental</h3>
-    </div>
-
-    <div class="folder" id="Proveedores" ondrop="drop(event)" ondragover="allowDrop(event)">
-      <h3>🧾 Proveedores</h3>
-    </div>
-  </div>
+<div class="contenedor">
+    <div id="contabilidad" class="carpeta"><h3>📁 Contabilidad</h3></div>
+    <div id="talento" class="carpeta"><h3>📁 Talento Humano</h3></div>
+    <div id="compras" class="carpeta"><h3>📁 Compras</h3></div>
+    <div id="administracion" class="carpeta"><h3>📁 Administración</h3></div>
 </div>
 
-<h3>Documentos</h3>
-<div id="documents">
-  <!-- Los ids deben coincidir con las claves en correctMapping -->
-  <div class="document" draggable="true" id="Factura_001.pdf" ondragstart="drag(event)">Factura_001.pdf</div>
-  <div class="document" draggable="true" id="SolicitudVacaciones.docx" ondragstart="drag(event)">SolicitudVacaciones.docx</div>
-  <div class="document" draggable="true" id="ActaReunion.docx" ondragstart="drag(event)">ActaReunion.docx</div>
-  <div class="document" draggable="true" id="ContratoServicio.pdf" ondragstart="drag(event)">ContratoServicio.pdf</div>
-  <div class="document" draggable="true" id="InformeVentas.xlsx" ondragstart="drag(event)">InformeVentas.xlsx</div>
-  <div class="document" draggable="true" id="HojaDeVida_Juan.docx" ondragstart="drag(event)">HojaDeVida_Juan.docx</div>
-  <div class="document" draggable="true" id="PQRS_Cliente.txt" ondragstart="drag(event)">PQRS_Cliente.txt</div>
-  <div class="document" draggable="true" id="Nomina_Diciembre.xlsx" ondragstart="drag(event)">Nomina_Diciembre.xlsx</div>
-  <div class="document" draggable="true" id="Inventario_Bodega.pdf" ondragstart="drag(event)">Inventario_Bodega.pdf</div>
-  <div class="document" draggable="true" id="Memorando_Interno.docx" ondragstart="drag(event)">Memorando_Interno.docx</div>
-  <div class="document" draggable="true" id="PlanCapacitacion.pdf" ondragstart="drag(event)">PlanCapacitacion.pdf</div>
-  <div class="document" draggable="true" id="ContratoLaboral_Julia.pdf" ondragstart="drag(event)">ContratoLaboral_Julia.pdf</div>
-  <div class="document" draggable="true" id="ReciboCaja_2025.pdf" ondragstart="drag(event)">ReciboCaja_2025.pdf</div>
-  <div class="document" draggable="true" id="PermisoSalida.docx" ondragstart="drag(event)">PermisoSalida.docx</div>
-  <div class="document" draggable="true" id="ReporteIndicadores.xlsx" ondragstart="drag(event)">ReporteIndicadores.xlsx</div>
+<br><br>
+
+<h3>📄 Documentos</h3>
+
+<div id="items">
+
+    <!-- CONTABILIDAD -->
+    <div class="item" data-ans="contabilidad">Factura 1204</div>
+    <div class="item" data-ans="contabilidad">Comprobante de egreso 450</div>
+    <div class="item" data-ans="contabilidad">Extracto bancario - Octubre</div>
+    <div class="item" data-ans="contabilidad">Relación de pagos proveedores</div>
+
+    <!-- TALENTO HUMANO -->
+    <div class="item" data-ans="talento">Contrato laboral – Juan Pérez</div>
+    <div class="item" data-ans="talento">Carta de llamado de atención</div>
+    <div class="item" data-ans="talento">Certificado de ingresos y retenciones</div>
+    <div class="item" data-ans="talento">Formato de vacaciones</div>
+
+    <!-- COMPRAS -->
+    <div class="item" data-ans="compras">Orden de compra 890</div>
+    <div class="item" data-ans="compras">Solicitud de cotización</div>
+    <div class="item" data-ans="compras">Lista de proveedores aprobados</div>
+
+    <!-- ADMINISTRACIÓN -->
+    <div class="item" data-ans="administracion">Memorando interno 034</div>
+    <div class="item" data-ans="administracion">Acta de reunión – Comité</div>
+    <div class="item" data-ans="administracion">Informe mensual de actividades</div>
+    <div class="item" data-ans="administracion">Correspondencia externa</div>
+
 </div>
 
-<div id="controls">
-  <button class="primary" onclick="enviar()">Enviar resultados</button>
-  <button class="ghost" onclick="resetActividad()">Reiniciar</button>
-  <button style="display:inline-block;background:#ef4444;color:white;border:none;border-radius:8px;padding:10px 12px;" onclick="salir()">Salir</button>
-</div>
+<br><br>
 
-<div id="resultado"></div>
+<button onclick="calificar()">Enviar resultados</button>
+
+<!-- 🔴 BOTÓN DE SALIDA AGREGADO (NO SE CAMBIÓ NADA MÁS) -->
+<br><br>
+<button onclick="history.back()" style="background:red; color:white; padding:10px; border:none; border-radius:8px;">
+    Salir
+</button>
 
 <script>
-/* ----------------------
-   Mapeo CORRECTO esperado
-   Las claves son los ids de los documentos
-   Los valores son el id de la carpeta correcta
-   ---------------------- */
-const correctMapping = {
-  "Factura_001.pdf": "Contabilidad",
-  "InformeVentas.xlsx": "Contabilidad",
-  "Nomina_Diciembre.xlsx": "Contabilidad",
-  "ReciboCaja_2025.pdf": "Contabilidad",
-  "ReporteIndicadores.xlsx": "Contabilidad",
-
-  "HojaDeVida_Juan.docx": "TalentoHumano",
-  "SolicitudVacaciones.docx": "TalentoHumano",
-  "ContratoLaboral_Julia.pdf": "TalentoHumano",
-  "PermisoSalida.docx": "TalentoHumano",
-  "PlanCapacitacion.pdf": "TalentoHumano",
-
-  "ActaReunion.docx": "GestionDocumental",
-  "Memorando_Interno.docx": "GestionDocumental",
-  "PQRS_Cliente.txt": "GestionDocumental", // puedes mover PQRS aquí o a Atención al Cliente; aquí lo colocamos como gestión
-
-  "ContratoServicio.pdf": "Proveedores",
-  "Inventario_Bodega.pdf": "Proveedores"
-};
-
-/* Ajusta este umbral si quieres */
-const UMBRAL_ACIERTOS = 10;
-
-/* Drag & drop básicos */
-function allowDrop(ev) { ev.preventDefault(); }
-function drag(ev) { ev.dataTransfer.setData("text/plain", ev.target.id); }
-function drop(ev) {
-  ev.preventDefault();
-  let data = ev.dataTransfer.getData("text/plain");
-  let dragged = document.getElementById(data);
-
-  // Si el objetivo es la carpeta (o dentro de un elemento hijo), buscamos el folder contenedor
-  let target = ev.currentTarget;
-  // Append al folder
-  target.appendChild(dragged);
-}
-
-/* Recolecta resultados y calcula puntaje */
-function enviar() {
-  const resultadoBox = document.getElementById('resultado');
-  resultadoBox.style.display = 'block';
-
-  // Recorrer carpetas
-  const carpetas = ["Contabilidad","TalentoHumano","GestionDocumental","Proveedores"];
-  let conteoCorrectos = 0;
-  let total = Object.keys(correctMapping).length;
-  let detalles = [];
-
-  // Crear mapa del destino actual
-  let ubicacionActual = {};
-  carpetas.forEach(c => {
-    let folderElem = document.getElementById(c);
-    // todos los elementos .document que están dentro de la carpeta actual
-    folderElem.querySelectorAll('.document').forEach(d => {
-      ubicacionActual[d.id] = c;
-    });
-  });
-
-  // Los documentos que el usuario dejó sin mover permanecen en el contenedor "documents"
-  document.querySelectorAll('#documents .document').forEach(d => {
-    ubicacionActual[d.id] = "sin ubicar";
-  });
-
-  // Comparar con el mapping correcto
-  for (let docId in correctMapping) {
-    let correcto = correctMapping[docId];
-    let ub = ubicacionActual[docId] || "sin ubicar";
-    let esOk = (ub === correcto);
-    if (esOk) conteoCorrectos++;
-    detalles.push({ documento: docId, correctoPara: correcto, puestoEn: ub, acierto: esOk });
-  }
-
-  // Mensajes automáticos según umbral
-  let mensajeCabecera = "";
-  let clase = "";
-  if (conteoCorrectos >= UMBRAL_ACIERTOS) {
-    mensajeCabecera = `✅ ¡Felicidades! Has avanzado a la siguiente etapa.\nTe esperamos el 18 de noviembre a las 2:00 p.m. en nuestras oficinas.\n\n`;
-    clase = "ok";
-  } else {
-    mensajeCabecera = `❌ Gracias por participar. Lamentamos que no continúes con el proceso de selección.\n\n`;
-    clase = "error";
-  }
-
-  // Construir texto de resultado (puedes adaptar para enviar al servidor)
-  let texto = mensajeCabecera;
-  texto += `Puntaje: ${conteoCorrectos} de ${total}.\n\nDetalle:\n`;
-  detalles.forEach(it => {
-    texto += `${it.documento} — correcto en: ${it.correctoPara} — puesto en: ${it.puestoEn} — ${it.acierto ? "OK" : "INCORRECTO"}\n`;
-  });
-
-  // Mostrar resultado
-  resultadoBox.className = clase;
-  resultadoBox.innerText = texto;
-
-  // (Opcional) aquí podrías enviar 'detalles' por fetch a un endpoint o generar un email
-  // ejemplo: enviarPorEmail(detalles, conteoCorrectos);
-}
-
-/* Reiniciar la actividad (vuelve a colocar los documentos en la lista original) */
-function resetActividad() {
-  const docsContainer = document.getElementById('documents');
-  // lista de documentos en el orden original
-  const ids = ["Factura_001.pdf","SolicitudVacaciones.docx","ActaReunion.docx","ContratoServicio.pdf",
-              "InformeVentas.xlsx","HojaDeVida_Juan.docx","PQRS_Cliente.txt","Nomina_Diciembre.xlsx",
-              "Inventario_Bodega.pdf","Memorando_Interno.docx","PlanCapacitacion.pdf","ContratoLaboral_Julia.pdf",
-              "ReciboCaja_2025.pdf","PermisoSalida.docx","ReporteIndicadores.xlsx"];
-  ids.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) docsContainer.appendChild(el);
-  });
-
-  // ocultar resultado
-  const resultadoBox = document.getElementById('resultado');
-  resultadoBox.style.display = 'none';
-  resultadoBox.className = '';
-  resultadoBox.innerText = '';
-}
-
-/* Botón Salir */
-function salir() {
-  // intenta cerrar la ventana (puede no funcionar en algunos navegadores). Alternativa: ir a about:blank
-  try { window.close(); } catch(e) { window.location.href = "about:blank"; }
-}
-</script>
-
-</body>
-</html>
+// DRAG UNIVER
