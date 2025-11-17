@@ -1,82 +1,250 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Actividad Auxiliar Administrativo - Drag & Drop</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Actividad: Clasifica los documentos</title>
 <style>
-    body { font-family: Arial; padding: 20px; }
-    h2 { margin-bottom: 20px; }
-    .contenedor { display: flex; flex-wrap: wrap; gap: 15px; }
-    .carpeta {
-        width: 250px; min-height: 220px;
-        border: 2px dashed #333;
-        padding: 10px; 
-        border-radius: 10px;
-        background: #fafafa;
-    }
-    .carpeta h3 { text-align: center; }
-    .item {
-        padding: 10px;
-        margin: 8px;
-        background: #f2f2f2;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        cursor: grab;
-        touch-action: none;
-    }
+  body { font-family: Arial, sans-serif; padding: 16px; background:#f7f9fc; color:#222; }
+  h1 { font-size:20px; margin-bottom:8px; }
+  .layout { display:flex; gap:12px; flex-wrap:wrap; }
+  .folders { display:flex; gap:12px; flex-wrap:wrap; }
+  .folder {
+    width: 46%;
+    min-height: 200px;
+    border: 2px dashed #6b7280;
+    border-radius:10px;
+    padding:10px;
+    background:#fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .folder h3 { margin:0 0 8px 0; font-size:16px; }
+  #documents { margin-top:14px; display:flex; flex-direction:column; gap:8px; }
+  .document {
+    padding:8px 10px;
+    border-radius:8px;
+    background:#e6f0ff;
+    border:1px solid #9bb1ff;
+    display:inline-block;
+    cursor:grab;
+    user-select:none;
+    touch-action:none;
+    position:relative;
+  }
+  #controls { margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; }
+  button { padding:10px 14px; border:none; border-radius:8px; cursor:pointer; }
+  button.primary { background:#0b76ef; color:white; }
+  button.ghost { background:#eee; color:#333; }
+  #resultado { margin-top:12px; padding:12px; border-radius:10px; display:none; white-space:pre-wrap; }
+  .ok { background:#d4edda; color:#155724; border:1px solid #c3e6cb; }
+  .error { background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; }
+
+  @media (min-width:760px){
+    .folder { width: 23%; }
+    #documents { width:100%; display:flex; flex-wrap:wrap; gap:8px; }
+  }
 </style>
 </head>
 <body>
 
-<h2>Arrastra los 15 documentos a la carpeta correcta</h2>
+<h1>Actividad: Clasifica los documentos en la carpeta correcta</h1>
+<p>Arrastra cada documento dentro de la carpeta correspondiente. Funciona en celulares, tablets y PC.</p>
 
-<div class="contenedor">
-    <div id="contabilidad" class="carpeta"><h3>📁 Contabilidad</h3></div>
-    <div id="talento" class="carpeta"><h3>📁 Talento Humano</h3></div>
-    <div id="compras" class="carpeta"><h3>📁 Compras</h3></div>
-    <div id="administracion" class="carpeta"><h3>📁 Administración</h3></div>
+<div class="layout">
+  <div class="folders" id="folders">
+    <div class="folder" id="Contabilidad" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <h3>📘 Contabilidad</h3>
+    </div>
+
+    <div class="folder" id="TalentoHumano" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <h3>🧑‍💼 Talento Humano</h3>
+    </div>
+
+    <div class="folder" id="GestionDocumental" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <h3>📚 Gestión Documental</h3>
+    </div>
+
+    <div class="folder" id="Proveedores" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <h3>🧾 Proveedores</h3>
+    </div>
+  </div>
 </div>
 
-<br><br>
-
-<h3>📄 Documentos</h3>
-
-<div id="items">
-
-    <!-- CONTABILIDAD -->
-    <div class="item" data-ans="contabilidad">Factura 1204</div>
-    <div class="item" data-ans="contabilidad">Comprobante de egreso 450</div>
-    <div class="item" data-ans="contabilidad">Extracto bancario - Octubre</div>
-    <div class="item" data-ans="contabilidad">Relación de pagos proveedores</div>
-
-    <!-- TALENTO HUMANO -->
-    <div class="item" data-ans="talento">Contrato laboral – Juan Pérez</div>
-    <div class="item" data-ans="talento">Carta de llamado de atención</div>
-    <div class="item" data-ans="talento">Certificado de ingresos y retenciones</div>
-    <div class="item" data-ans="talento">Formato de vacaciones</div>
-
-    <!-- COMPRAS -->
-    <div class="item" data-ans="compras">Orden de compra 890</div>
-    <div class="item" data-ans="compras">Solicitud de cotización</div>
-    <div class="item" data-ans="compras">Lista de proveedores aprobados</div>
-
-    <!-- ADMINISTRACIÓN -->
-    <div class="item" data-ans="administracion">Memorando interno 034</div>
-    <div class="item" data-ans="administracion">Acta de reunión – Comité</div>
-    <div class="item" data-ans="administracion">Informe mensual de actividades</div>
-    <div class="item" data-ans="administracion">Correspondencia externa</div>
-
+<h3>Documentos</h3>
+<div id="documents">
+  <div class="document" draggable="true" id="Factura_001.pdf" ondragstart="drag(event)">Factura_001.pdf</div>
+  <div class="document" draggable="true" id="SolicitudVacaciones.docx" ondragstart="drag(event)">SolicitudVacaciones.docx</div>
+  <div class="document" draggable="true" id="ActaReunion.docx" ondragstart="drag(event)">ActaReunion.docx</div>
+  <div class="document" draggable="true" id="ContratoServicio.pdf" ondragstart="drag(event)">ContratoServicio.pdf</div>
+  <div class="document" draggable="true" id="InformeVentas.xlsx" ondragstart="drag(event)">InformeVentas.xlsx</div>
+  <div class="document" draggable="true" id="HojaDeVida_Juan.docx" ondragstart="drag(event)">HojaDeVida_Juan.docx</div>
+  <div class="document" draggable="true" id="PQRS_Cliente.txt" ondragstart="drag(event)">PQRS_Cliente.txt</div>
+  <div class="document" draggable="true" id="Nomina_Diciembre.xlsx" ondragstart="drag(event)">Nomina_Diciembre.xlsx</div>
+  <div class="document" draggable="true" id="Inventario_Bodega.pdf" ondragstart="drag(event)">Inventario_Bodega.pdf</div>
+  <div class="document" draggable="true" id="Memorando_Interno.docx" ondragstart="drag(event)">Memorando_Interno.docx</div>
+  <div class="document" draggable="true" id="PlanCapacitacion.pdf" ondragstart="drag(event)">PlanCapacitacion.pdf</div>
+  <div class="document" draggable="true" id="ContratoLaboral_Julia.pdf" ondragstart="drag(event)">ContratoLaboral_Julia.pdf</div>
+  <div class="document" draggable="true" id="ReciboCaja_2025.pdf" ondragstart="drag(event)">ReciboCaja_2025.pdf</div>
+  <div class="document" draggable="true" id="PermisoSalida.docx" ondragstart="drag(event)">PermisoSalida.docx</div>
+  <div class="document" draggable="true" id="ReporteIndicadores.xlsx" ondragstart="drag(event)">ReporteIndicadores.xlsx</div>
 </div>
 
-<br><br>
+<div id="controls">
+  <button class="primary" onclick="enviar()">Enviar resultados</button>
+  <button class="ghost" onclick="resetActividad()">Reiniciar</button>
+  <button style="background:#ef4444;color:white;" onclick="salir()">Salir</button>
+</div>
 
-<button onclick="calificar()">Enviar resultados</button>
+<div id="resultado"></div>
 
-<!-- 🔴 BOTÓN DE SALIDA AGREGADO (NO SE CAMBIÓ NADA MÁS) -->
-<br><br>
-<button onclick="history.back()" style="background:red; color:white; padding:10px; border:none; border-radius:8px;">
-    Salir
-</button>
 
 <script>
-// DRAG UNIVER
+/* -------------------------
+   CORRECT MAPPING
+---------------------------- */
+const correctMapping = {
+  "Factura_001.pdf": "Contabilidad",
+  "InformeVentas.xlsx": "Contabilidad",
+  "Nomina_Diciembre.xlsx": "Contabilidad",
+  "ReciboCaja_2025.pdf": "Contabilidad",
+  "ReporteIndicadores.xlsx": "Contabilidad",
+
+  "HojaDeVida_Juan.docx": "TalentoHumano",
+  "SolicitudVacaciones.docx": "TalentoHumano",
+  "ContratoLaboral_Julia.pdf": "TalentoHumano",
+  "PermisoSalida.docx": "TalentoHumano",
+  "PlanCapacitacion.pdf": "TalentoHumano",
+
+  "ActaReunion.docx": "GestionDocumental",
+  "Memorando_Interno.docx": "GestionDocumental",
+  "PQRS_Cliente.txt": "GestionDocumental",
+
+  "ContratoServicio.pdf": "Proveedores",
+  "Inventario_Bodega.pdf": "Proveedores"
+};
+
+const UMBRAL_ACIERTOS = 10;
+
+/* PC DRAG */
+function allowDrop(ev) { ev.preventDefault(); }
+function drag(ev) { ev.dataTransfer.setData("text/plain", ev.target.id); }
+function drop(ev) {
+  ev.preventDefault();
+  let id = ev.dataTransfer.getData("text/plain");
+  ev.currentTarget.appendChild(document.getElementById(id));
+}
+
+/* -------------------------
+   TOUCH DRAG UNIVERSAL
+---------------------------- */
+
+let touchItem = null;
+let offsetX = 0, offsetY = 0;
+
+document.querySelectorAll(".document").forEach(doc => {
+  doc.addEventListener("touchstart", e => {
+    touchItem = doc;
+    let touch = e.touches[0];
+    offsetX = touch.clientX - doc.getBoundingClientRect().left;
+    offsetY = touch.clientY - doc.getBoundingClientRect().top;
+    doc.style.position = "absolute";
+    doc.style.zIndex = 9999;
+  });
+
+  doc.addEventListener("touchmove", e => {
+    if (!touchItem) return;
+    e.preventDefault();
+    let touch = e.touches[0];
+    touchItem.style.left = (touch.clientX - offsetX) + "px";
+    touchItem.style.top = (touch.clientY - offsetY) + "px";
+  });
+
+  doc.addEventListener("touchend", e => {
+    if (!touchItem) return;
+
+    let touch = e.changedTouches[0];
+    let x = touch.clientX;
+    let y = touch.clientY;
+
+    let elem = document.elementFromPoint(x, y);
+
+    while (elem && !elem.classList.contains("folder")) {
+      elem = elem.parentElement;
+    }
+
+    if (elem) elem.appendChild(touchItem);
+
+    touchItem.style.position = "relative";
+    touchItem.style.left = "0";
+    touchItem.style.top = "0";
+    touchItem.style.zIndex = 1;
+
+    touchItem = null;
+  });
+});
+
+/* -------------------------------------
+   CALIFICAR
+---------------------------------------- */
+function enviar() {
+  const resultadoBox = document.getElementById('resultado');
+  resultadoBox.style.display = 'block';
+
+  let carpetas = ["Contabilidad","TalentoHumano","GestionDocumental","Proveedores"];
+  let ubicacionActual = {};
+  let detalles = [];
+  let correctos = 0;
+
+  carpetas.forEach(c => {
+    document.getElementById(c)
+      .querySelectorAll('.document')
+      .forEach(d => ubicacionActual[d.id] = c);
+  });
+
+  document.querySelectorAll("#documents .document").forEach(d => {
+    ubicacionActual[d.id] = "sin ubicar";
+  });
+
+  for (let docID in correctMapping) {
+    let correcto = correctMapping[docID];
+    let puesto = ubicacionActual[docID];
+    let ok = (puesto === correcto);
+    if (ok) correctos++;
+
+    detalles.push(`${docID} — correcto: ${correcto} — puesto: ${puesto} — ${ok ? "OK" : "INCORRECTO"}`);
+  }
+
+  let msg =
+    (correctos >= UMBRAL_ACIERTOS)
+    ? "✅ ¡Felicidades! Has avanzado a la siguiente etapa.\nTe esperamos el 18 de noviembre a las 2:00 p.m. en nuestras oficinas.\n\n"
+    : "❌ Gracias por participar. Lamentamos que no continúes con el proceso de selección.\n\n";
+
+  resultadoBox.innerText = msg + `Puntaje: ${correctos}/15\n\n` + detalles.join("\n");
+  resultadoBox.className = (correctos >= UMBRAL_ACIERTOS) ? "ok" : "error";
+}
+
+/* RESET */
+function resetActividad() {
+  const order = [
+    "Factura_001.pdf","SolicitudVacaciones.docx","ActaReunion.docx","ContratoServicio.pdf",
+    "InformeVentas.xlsx","HojaDeVida_Juan.docx","PQRS_Cliente.txt","Nomina_Diciembre.xlsx",
+    "Inventario_Bodega.pdf","Memorando_Interno.docx","PlanCapacitacion.pdf","ContratoLaboral_Julia.pdf",
+    "ReciboCaja_2025.pdf","PermisoSalida.docx","ReporteIndicadores.xlsx"
+  ];
+
+  const docs = document.getElementById("documents");
+  order.forEach(id => docs.appendChild(document.getElementById(id)));
+
+  const res = document.getElementById("resultado");
+  res.style.display = "none";
+  res.innerHTML = "";
+}
+
+/* SALIR */
+function salir() {
+  try { window.close(); } catch(e) { window.location.href = "about:blank"; }
+}
+</script>
+
+</body>
+</html>
