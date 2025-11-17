@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Actividad de Gamificación - Arrastra Documentos</title>
+<title>Actividad de Gamificación - Arrastra Documentos a la carpeta</title>
 <style>
 body { font-family: Arial; padding: 20px; }
 .container { display: flex; gap: 20px; }
@@ -26,6 +26,10 @@ body { font-family: Arial; padding: 20px; }
   <div class="folder" ondrop="drop(event)" ondragover="allowDrop(event)">
     <h3>Gestión Documental</h3>
   </div>
+
+  <div class="folder" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <h3>Proveedores</h3>
+  </div>
 </div>
 
 <h3>Documentos</h3>
@@ -34,6 +38,18 @@ body { font-family: Arial; padding: 20px; }
   <div class="document" draggable="true" ondragstart="drag(event)" id="doc2">SolicitudVacaciones.docx</div>
   <div class="document" draggable="true" ondragstart="drag(event)" id="doc3">ActaReunión.docx</div>
   <div class="document" draggable="true" ondragstart="drag(event)" id="doc4">ContratoServicio.pdf</div>
+  <div class="document" draggable="true" ondragstart="drag(event)" id="doc1">Factura_001.pdf</div>
+  <div class="document" draggable="true" ondragstart="drag(event)" id="doc2">InformeVentas.xlsx</div>
+  <div class="document" draggable="true" ondragstart="drag(event)" id="doc3">HojaDeVida_Juan.docx</div>
+  <div class="document" draggable="true" ondragstart="drag(event)" id="doc4">PQRS_Cliente.tx</div>
+  <div class="document" draggable="true" ondragstart="drag(event)" id="doc1">Nómina_Diciembre.xlsx</div>
+  <div class="document" draggable="true" ondragstart="drag(event)" id="doc2">Inventario_Bodega.pdf</div>
+  <div class="document" draggable="true" ondragstart="drag(event)" id="doc3">Memorando_Interno.docx</div>
+  <div class="document" draggable="true" ondragstart="drag(event)" id="doc4">PlanCapacitacion.pdf</div>
+  <div class="document" draggable="true" ondragstart="drag(event)" id="doc1">ContratoLaboral_Julia.pdf</div>
+  <div class="document" draggable="true" ondragstart="drag(event)" id="doc2">ReciboCaja_2025.pdf</div>
+  <div class="document" draggable="true" ondragstart="drag(event)" id="doc3">PermisoSalida.docx</div>
+  <div class="document" draggable="true" ondragstart="drag(event)" id="doc4">ReporteIndicadores.xlsx</div>
 </div>
 
 <script>
